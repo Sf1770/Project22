@@ -44,11 +44,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let beaconRegion = CLBeaconRegion(proximityUUID: uuid, major: 123, minor: 456, identifier: "MyBeacon")
         
         locationManager.startMonitoring(for: beaconRegion)
-        locationManager.startRangingBeacons(in: beaconRegion)
+        
+        //use the method below when you looking for beacons within a certain range
+        //locationManager.startRangingBeacons(in: beaconRegion)
     }
     
     func update(distance: CLProximity){
         //changes the screen color and text color depending on the proximity of the beacon
+        //use this when monitoring beacons within a certain range
         UIView.animate(withDuration: 0.8){
             [unowned self] in
             switch distance {
@@ -71,17 +74,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        //catch the ranging method from CLLocationManager
-        if beacons.count > 0 {
-            //if beacons are received, we'll pull out the first one and use its proximity property to call our update method and redraw user interface
-            let beacon = beacons[0]
-            update(distance: beacon.proximity)
-        } else{
-            //no beacons found
-            update(distance: .unknown)
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if let beaconRegion = region as? CLBeaconRegion{
+            print("DID ENTER REGION: uuid: \(beaconRegion.proximityUUID.uuidString)")
+            self.view.backgroundColor = UIColor.blue
+            self.distanceReading.text = "ENTERED REGION"
         }
     }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if let beaconRegion = region as? CLBeaconRegion{
+            print("DID EXIT REGION: uuid: \(beaconRegion.proximityUUID.uuidString)")
+            
+        }
+    }
+// This function is to help monitor beacons within range of the beacon
+//    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
+//        //catch the ranging method from CLLocationManager
+//        if beacons.count > 0 {
+//            //if beacons are received, we'll pull out the first one and use its proximity property to call our update method and redraw user interface
+//            let beacon = beacons[0]
+//            update(distance: beacon.proximity)
+//        } else{
+//            //no beacons found
+//            update(distance: .unknown)
+//        }
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
