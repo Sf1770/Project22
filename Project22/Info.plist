@@ -41,5 +41,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We want to help you find the nearest store.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We want to help you find the nearest store.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We want to help you find the nearest store.</string>
 </dict>
 </plist>
